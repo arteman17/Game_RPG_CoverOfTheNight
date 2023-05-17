@@ -2,17 +2,19 @@
 
 #include <QMainWindow>
 #include <QKeyEvent>
+#include <QMouseEvent>
 #include <QGraphicsScene>
 #include <QGraphicsView>
-#include "model.h"
 #include <QWidget>
+#include "model.h"
 
 class GameWindow : public QMainWindow {
-    Q_OBJECT;
+    Q_OBJECT
 public:
-    GameWindow(QWidget* parent = nullptr);
+    explicit GameWindow(QWidget* parent = nullptr);
     void keyPressEvent(QKeyEvent* event) override;
     void keyReleaseEvent(QKeyEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
     void updateFrame();
 private:
     QGraphicsScene* scene_;

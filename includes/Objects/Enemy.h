@@ -1,15 +1,18 @@
 #pragma once
 
-#include <QPainter>
 #include "Creature.h"
+#include <QPainter>
 
-class Hero :public Creature {
+class Enemy : public Creature {
 public:
-    Hero();
+    Enemy(const QPointF& pos);
 
+    int getDamage();
+
+    void attack(Creature* target);
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     QRectF boundingRect() const override;
-
 protected:
-    int exp_ = 0;
+    int damage_;
+    int agr_dist;
 };

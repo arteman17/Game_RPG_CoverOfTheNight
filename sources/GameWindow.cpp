@@ -1,29 +1,30 @@
 #include "GameWindow.h"
 #include <QDebug>
 #include <QTimer>
-#include <iostream>
+#include <cmath>
 
 GameWindow::GameWindow(QWidget* parent)
     : QMainWindow(parent),
       scene_(new QGraphicsScene(this)),
       view_(new QGraphicsView(this)),
       model_(new model()) {
-    resize(800, 800);
+    resize(maximumWidth(), maximumHeight());
     view_->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-    view_->setFixedSize(800, 800);
+    scene_->setSceneRect(0, 0, 10000, 10000);
+    view_->resize(1920, 1080);
+    view_->setScene(scene_);
 
     setFocusPolicy(Qt::StrongFocus);
-    scene_->setSceneRect(-5000, -5000, 10000, 10000);
     scene_->addItem(model_->hero_);
-
-    view_->setScene(scene_);
+    setCentralWidget(view_);
 
     auto* timer = new QTimer(this);
     connect(timer, &QTimer::timeout, [this]() { updateFrame(); });
     timer->start(16);
 
-    scene_->addLine({-10000, 0, 10000, 0}, {Qt::red, 3});
-    scene_->addLine({0, -10000, 0, 10000}, {Qt::red, 3});
+    scene_->addLine({-10000, 5000, 10000, 5000}, {Qt::red, 3});
+    scene_->addLine({5000, -10000, 5000, 10000}, {Qt::red, 3});
+
     view_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
@@ -42,6 +43,12 @@ void GameWindow::keyPressEvent(QKeyEvent* event) {
     }
     if (event->key() == Qt::Key_D) {
         model_->hero_->setDirection(QPointF(1, yd));
+    }
+    if (event->key() == Qt::Key_1) {
+        model_->hero_->setActiveWeapon(1);
+    }
+    if (event->key() == Qt::Key_2) {
+        model_->hero_->setActiveWeapon(2);
     }
 }
 
@@ -62,4 +69,15 @@ void GameWindow::updateFrame() {
     view_->centerOn(model_->hero_);
     view_->scene()->update();
     update();
+}
+
+void GameWindow::mousePressEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        model_->addProjectile(event->pos());
+        scene_->addItem(model_->hero_proj_[model_->hero_proj_.size() - 1]);
+    }
+    if (event->button() == Qt::RightButton) {
+        model_->addEnemy(event->pos());
+        scene_->addItem(model_->enemies_[model_->enemies_.size() - 1]);
+    }
 }

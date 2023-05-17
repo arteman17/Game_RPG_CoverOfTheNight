@@ -1,10 +1,7 @@
 #include "MovableObject.h"
 #include <cmath>
-#include <QDebug>
 
-MovableObject::MovableObject() {
-    direction_ = QPointF(0, 0);
-}
+MovableObject::MovableObject() : speed_(), direction_() { }
 
 double MovableObject::getSpeed() const {
     return speed_;
@@ -23,8 +20,10 @@ void MovableObject::setDirection(const QPointF& direction) {
 }
 
 void MovableObject::move() {
-    double lenght = sqrt(direction_.x() * direction_.x() + direction_.y() * direction_.y());
-    if (lenght == 0)
+    double length = sqrt(direction_.x() * direction_.x() + direction_.y() * direction_.y());
+    if (length == 0)
         return;
-    SetPosition(QPointF(position_.x() + speed_ * direction_.x() / lenght, position_.y() + speed_ * direction_.y() / lenght));
+    setPosition(
+        QPointF(position_.x() + speed_ * direction_.x(), position_.y() + speed_ * direction_.y())
+    );
 }

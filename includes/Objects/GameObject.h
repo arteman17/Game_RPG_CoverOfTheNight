@@ -6,10 +6,13 @@
 class GameObject : public QGraphicsItem {
 public:
     GameObject();
+    explicit GameObject(QPointF pos);
 
-    void SetPosition(QPointF pos);
-    const QPointF GetPosition() const;
+    void setPosition(QPointF newPos);
+    const QPointF& getPosition() const;
 
 protected:
     QPointF position_;
 };
+
+double dist(QPointF begin, QPointF end);
