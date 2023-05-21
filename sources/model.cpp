@@ -7,31 +7,15 @@ model::model() : hero_(new Hero) { }
 
 void model::modelUpdate() {
     hero_->move();
-    for (auto& hero_proj : hero_proj_) {
-        hero_proj->move();
-        if (dist({0, 0}, hero_proj->getPosition() - hero_->getPosition()) > sqrt(2) * 1920) {
-            delete hero_proj;
-            hero_proj = nullptr;
-            continue;
-        }
-        for (auto& enemy : enemies_) {
-            if (hero_proj->collidesWithItem(enemy)) {
-                enemy->damage(hero_proj->getDamage());
-                delete hero_proj;
-                hero_proj = nullptr;
-                if (!enemy->isAlive()) {
-                    delete enemy;
-                    enemy = nullptr;
-                }
-                break;
-            }
-            erase_if(enemies_, [](auto* obj) {return obj == nullptr;});
-        }
+    for(auto* enemy : enemies_) {
+        enemy->move();
     }
-    erase_if(hero_proj_, [](auto* obj){return obj == nullptr;});
+    for (auto*& hero_proj : hero_proj_) {
+        hero_proj->move();
+    }
 }
 
-void model::addProjectile(QPointF coord) {
+void model::addHeroProjectile(QPointF coord) {
     if (hero_->getPosition().x() < 960 && hero_->getPosition().y() < 540) {
         hero_proj_.emplace_back(new Projectile(hero_->getActiveWeapon(), coord, *hero_));
     } else if (hero_->getPosition().x() > 960 && hero_->getPosition().y() < 540) {

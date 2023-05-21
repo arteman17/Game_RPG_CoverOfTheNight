@@ -3,6 +3,9 @@
 Hero::Hero() {
     setPosition({5000, 5000});
     setSpeed(8);
+    setMaxHp(50);
+    setHp(50);
+
 }
 
 QRectF Hero::boundingRect() const {

@@ -27,3 +27,11 @@ void Creature::heal(int heal) {
     if (hp_ > max_hp_)
         hp_ = max_hp_;
 }
+
+void Creature::setHp(int hp) {
+    hp_ = hp;
+}
+
+void Creature::setMaxHp(int max_hp) {
+    max_hp_ = max_hp;
+}

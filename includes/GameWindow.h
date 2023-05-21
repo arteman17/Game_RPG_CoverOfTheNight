@@ -3,10 +3,13 @@
 #include <QMainWindow>
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QTimerEvent>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QWidget>
+#include <QTimer>
 #include "model.h"
+#include "Controller.h"
 
 class GameWindow : public QMainWindow {
     Q_OBJECT
@@ -17,7 +20,10 @@ public:
     void mousePressEvent(QMouseEvent* event) override;
     void updateFrame();
 private:
+    QTimer* game_timer_;
+    QTimer* hero_attack_timer_;
+    int attackTime_ = 0;
     QGraphicsScene* scene_;
     QGraphicsView* view_;
-    std::unique_ptr<model> model_;
+    Controller* controller_;
 };

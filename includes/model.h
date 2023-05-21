@@ -9,10 +9,11 @@ public:
     model();
     void modelUpdate();
 
-    void addProjectile(QPointF coord);
+    void addHeroProjectile(QPointF coord);
     void addEnemy(QPointF coord);
 
     Hero* hero_;
-    std::vector<Enemy*> enemies_;
-    std::vector<Projectile*> hero_proj_;
+    std::vector<Enemy*> enemies_ { };
+    std::vector<Projectile*> hero_proj_ { };
+    std::vector<GameObject*> scene_obj_ { };
 };

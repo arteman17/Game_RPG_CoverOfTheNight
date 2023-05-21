@@ -24,6 +24,6 @@ void MovableObject::move() {
     if (length == 0)
         return;
     setPosition(
-        QPointF(position_.x() + speed_ * direction_.x(), position_.y() + speed_ * direction_.y())
+        QPointF(position_.x() + speed_ * direction_.x() / length, position_.y() + speed_ * direction_.y() / length)
     );
 }

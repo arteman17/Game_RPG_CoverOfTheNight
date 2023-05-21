@@ -1,7 +1,7 @@
 #include "Weapon.h"
 
-Weapon::Weapon(WeaponTypes type, int damage, double range, int speed) :
-      type_(type), range_(range), damage_(damage), speed_(speed) { }
+Weapon::Weapon(WeaponTypes type, int damage, double range, int speed, int duration) :
+      type_(type), range_(range), damage_(damage), speed_(speed), duration_(duration) { }
 
 WeaponTypes Weapon::getType() {
     return type_;
@@ -29,4 +29,12 @@ int Weapon::getSpeed() const {
 
 void Weapon::setSpeed(int speed) {
     speed_ = speed;
+}
+
+int Weapon::getDuration() const {
+    return duration_;
+}
+
+void Weapon::setDuration(int duration) {
+    duration_ = duration;
 }

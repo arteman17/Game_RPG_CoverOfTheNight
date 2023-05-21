@@ -15,5 +15,5 @@ public:
     void move();
 protected:
     double speed_;
-    QPointF direction_;
+    QPointF direction_ = {0, 0};
 };
