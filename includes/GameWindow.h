@@ -8,6 +8,8 @@
 #include <QGraphicsView>
 #include <QWidget>
 #include <QTimer>
+#include <QPixmap>
+
 #include "model.h"
 #include "Controller.h"
 

@@ -14,11 +14,10 @@ Projectile::Projectile(const Weapon& weapon, const QPointF& target, const Creatu
 
 void Projectile::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     painter->setPen({Qt::red, 3});
-//    setTransformOriginPoint(position_);
-//    double angle = atan2(direction_.y(), direction_.x());
-//    setRotation(angle);
-//    rotation();
     painter->drawRect(boundingRect());
+//    double angle = atan2(direction_.y(), direction_.x());
+//    this->setRotation(angle);
+//    this->rotation();
 }
 
 QRectF Projectile::boundingRect() const {

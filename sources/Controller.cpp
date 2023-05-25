@@ -42,12 +42,15 @@ void Controller::enemyMoving() {
         } else {
             if (enemy->getStartPos() != enemy->getPosition()) {
                 double length = dist(enemy->getStartPos(), enemy->getPosition());
-                enemy->setDirection(
-                    {(enemy->getStartPos().x() - enemy->getPosition().x()) / length,
-                     (enemy->getStartPos().y() - enemy->getPosition().y()) / length}
-                );
-            } else {
-                enemy->setDirection({0, 0});
+                if (length <= 5) {
+                    enemy->setDirection({0, 0});
+                    enemy->setPosition(enemy->getStartPos());
+                } else {
+                    enemy->setDirection(
+                        {(enemy->getStartPos().x() - enemy->getPosition().x()) / length,
+                         (enemy->getStartPos().y() - enemy->getPosition().y()) / length}
+                    );
+                }
             }
         }
     }
@@ -58,6 +61,15 @@ void Controller::enemyAttack() {
         double minDist = (model_->hero_->boundingRect().width() + enemy->boundingRect().width()) / 2 + 5;
         if (minDist / dist(model_->hero_->getPosition(), enemy->getPosition()) >= 1) {
             enemy->attack(model_->hero_);
+            enemy->setDirection({0, 0});
+        }
+    }
+}
+
+void Controller::heroCollide() {
+    for(auto obj : model_->scene_obj_) {
+        if (model_->hero_->collidesWithItem(obj)) {
+            model_->hero_->setDirection({-model_->hero_->getDirection().x(), -model_->hero_->getDirection().y()});
         }
     }
 }

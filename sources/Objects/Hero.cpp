@@ -1,7 +1,7 @@
 #include "Hero.h"
 
 Hero::Hero() {
-    setPosition({5000, 5000});
+    setPosition({2500, 2500});
     setSpeed(8);
     setMaxHp(50);
     setHp(50);

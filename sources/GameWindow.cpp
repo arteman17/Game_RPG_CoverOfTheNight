@@ -16,7 +16,10 @@ GameWindow::GameWindow(QWidget* parent)
     view_->setDragMode(QGraphicsView::NoDrag);
 
     resize(maximumWidth(), maximumHeight());
-    scene_->setSceneRect(0, 0, 10000, 10000);
+    scene_->setSceneRect(0, 0, 5000, 5000);
+    auto background = new QPixmap(":resources/map.png");
+//    background->scaled(5000, 5000);
+    scene_->setBackgroundBrush(*background);
     view_->resize(1920, 1080);
     view_->setScene(scene_);
 
@@ -33,8 +36,10 @@ GameWindow::GameWindow(QWidget* parent)
     connect(hero_attack_timer_, &QTimer::timeout, [this]() { attackTime_++; });
     hero_attack_timer_->start();
 
-    scene_->addLine({-10000, 5000, 10000, 5000}, {Qt::red, 3});
-    scene_->addLine({5000, -10000, 5000, 10000}, {Qt::red, 3});
+    scene_->addItem(controller_->getModel()->scene_obj_.back());
+
+    scene_->addLine({0, 2500, 5000, 2500}, {Qt::red, 3});
+    scene_->addLine({2500, 0, 2500, 5000}, {Qt::red, 3});
 }
 
 void GameWindow::keyPressEvent(QKeyEvent* event) {
@@ -74,6 +79,7 @@ void GameWindow::keyReleaseEvent(QKeyEvent* event) {
 
 void GameWindow::updateFrame() {
     controller_->getModel()->modelUpdate();
+    controller_->heroCollide();
     controller_->heroProjCollide();
     controller_->enemyMoving();
     controller_->enemyAttack();
@@ -91,6 +97,9 @@ void GameWindow::mousePressEvent(QMouseEvent* event) {
         if (attackTime_ >= 1) {
             controller_->getModel()->addHeroProjectile(event->pos());
             scene_->addItem(controller_->getModel()->hero_proj_.back());
+//            double angle = atan2(direction_.y(), direction_.x());
+//            this->setRotation(angle);
+//            this->rotation();
             attackTime_ = 0;
         }
     }

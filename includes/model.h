@@ -15,5 +15,5 @@ public:
     Hero* hero_;
     std::vector<Enemy*> enemies_ { };
     std::vector<Projectile*> hero_proj_ { };
-    std::vector<GameObject*> scene_obj_ { };
+    std::vector<GameObject*> scene_obj_ {new GameObject({2300, 2300})};
 };
