@@ -14,14 +14,15 @@ Projectile::Projectile(const Weapon& weapon, const QPointF& target, const Creatu
 
 void Projectile::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     painter->setPen({Qt::red, 3});
-    painter->drawRect(boundingRect());
-//    double angle = atan2(direction_.y(), direction_.x());
-//    this->setRotation(angle);
-//    this->rotation();
+    auto fireball = new QPixmap(":resources/fireball.png");
+    double angle = atan2(direction_.y(), direction_.x());
+    fireball->transformed(QTransform().rotateRadians(angle));
+    painter->drawPixmap(-10, -10, *fireball);
+//    painter->drawRect(boundingRect());
 }
 
 QRectF Projectile::boundingRect() const {
-    return {-20, -3, 40, 6};
+    return {-10, -10, 20, 20};
 }
 
 int Projectile::getDamage() {

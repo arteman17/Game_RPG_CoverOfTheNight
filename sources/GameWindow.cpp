@@ -18,7 +18,6 @@ GameWindow::GameWindow(QWidget* parent)
     resize(maximumWidth(), maximumHeight());
     scene_->setSceneRect(0, 0, 5000, 5000);
     auto background = new QPixmap(":resources/map.png");
-//    background->scaled(5000, 5000);
     scene_->setBackgroundBrush(*background);
     view_->resize(1920, 1080);
     view_->setScene(scene_);
@@ -38,8 +37,8 @@ GameWindow::GameWindow(QWidget* parent)
 
     scene_->addItem(controller_->getModel()->scene_obj_.back());
 
-    scene_->addLine({0, 2500, 5000, 2500}, {Qt::red, 3});
-    scene_->addLine({2500, 0, 2500, 5000}, {Qt::red, 3});
+//    scene_->addLine({0, 2500, 5000, 2500}, {Qt::red, 3});
+//    scene_->addLine({2500, 0, 2500, 5000}, {Qt::red, 3});
 }
 
 void GameWindow::keyPressEvent(QKeyEvent* event) {

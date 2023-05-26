@@ -9,12 +9,16 @@ Hero::Hero() {
 }
 
 QRectF Hero::boundingRect() const {
-    return {-50, -50, 100, 100};
+    return {-50, -72, 100, 143};
 }
 
 void Hero::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     painter->setPen({Qt::black, 3});
-    painter->drawRect(boundingRect());
+    auto hero = new QPixmap(":resources/hero.png");
+//    double angle = atan2(direction_.y(), direction_.x());
+//    fireball->transformed(QTransform().rotateRadians(angle));
+    painter->drawPixmap(-50, -72, *hero);
+//    painter->drawRect(boundingRect());
 }
 
 void Hero::addWeapon(Weapon weapon) {
