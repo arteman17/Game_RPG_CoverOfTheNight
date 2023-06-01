@@ -1,13 +1,21 @@
 <RCC>
     <qresource>
         <file>Json/enemy.json</file>
+        <file>Json/obj.json</file>
         <file>Json/enemyType.json</file>
         <file>resources/map.png</file>
-        <file>resources/mapExample.png</file>
         <file>resources/house.png</file>
         <file>resources/fireball.png</file>
         <file>resources/hero.png</file>
         <file>resources/KaelIcon.png</file>
         <file>resources/interface.png</file>
+        <file>resources/MageHero.png</file>
+        <file>resources/enemy_0.png</file>
+        <file>resources/enemy_1.png</file>
+        <file>resources/sounds/back_music.mp3</file>
+        <file>resources/sounds/fireball.mp3</file>
+        <file>resources/sounds/punch_0.mp3</file>
+        <file>resources/sounds/punch_1.mp3</file>
+        <file>resources/sounds/lvl_up.mp3</file>
     </qresource>
 </RCC>

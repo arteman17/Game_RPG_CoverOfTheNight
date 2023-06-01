@@ -12,6 +12,7 @@ find_package(Qt5 COMPONENTS
         Core
         Gui
         Widgets
+        Multimedia
         REQUIRED)
 
 file(GLOB_RECURSE SOURCES sources/*.cpp)
@@ -19,10 +20,11 @@ file(GLOB_RECURSE HEADERS includes/*.h)
 
 add_executable(Game_RPG_CoverOfTheNight ${SOURCES} ${HEADERS} resources.qrc)
 
-include_directories(Game_RPG_CoverOfTheNight includes includes/Objects includes/Graphics resources)
+include_directories(Game_RPG_CoverOfTheNight includes includes/Objects includes/Graphics resources resources/sounds)
 
 target_link_libraries(Game_RPG_CoverOfTheNight
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
+        Qt5::Multimedia
         )

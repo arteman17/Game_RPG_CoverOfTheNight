@@ -43,10 +43,15 @@ GameWindow::GameWindow(QWidget* parent)
     game_timer_->start();
 
     hero_attack_timer_ = new QTimer(this);
-    hero_attack_timer_->setInterval(controller_->getModel()->hero_->getActiveWeapon().getDuration());
+    hero_attack_timer_->setInterval(controller_->getModel()->hero_->getActiveWeapon().getDuration()
+    );
     connect(hero_attack_timer_, &QTimer::timeout, [this]() { attackTime_++; });
     hero_attack_timer_->start();
 
+    player_ = new QMediaPlayer(this);
+    player_->setMedia(QUrl("qrc:/resources/sounds/back_music.mp3"));
+    player_->setVolume(70);
+    player_->play();
 }
 
 void GameWindow::keyPressEvent(QKeyEvent* event) {
@@ -70,6 +75,13 @@ void GameWindow::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_2) {
         controller_->getModel()->hero_->setActiveWeapon(2);
     }
+    if (event->key() == Qt::Key_Escape) {
+        if (game_timer_->isActive()) {
+            pause();
+        } else {
+            unpause();
+        }
+    }
 }
 
 void GameWindow::keyReleaseEvent(QKeyEvent* event) {
@@ -91,7 +103,7 @@ void GameWindow::updateFrame() {
     controller_->heroProjCollide();
     controller_->enemyAttack();
     if (!controller_->getModel()->hero_->isAlive()) {
-//        close();
+        //        close();
         game_timer_->stop();
     }
     hud_->updateHUD();
@@ -108,8 +120,16 @@ void GameWindow::mousePressEvent(QMouseEvent* event) {
             attackTime_ = 0;
         }
     }
-//    if (event->button() == Qt::RightButton) {
-//        controller_->getModel()->addEnemy(event->pos());
-//        scene_->addItem(controller_->getModel()->enemies_.back());
-//    }
+}
+
+void GameWindow::pause() {
+    game_timer_->stop();
+    hero_attack_timer_->stop();
+    player_->setVolume(40);
+}
+
+void GameWindow::unpause() {
+    game_timer_->start();
+    hero_attack_timer_->start();
+    player_->setVolume(70);
 }

@@ -2,6 +2,7 @@
 
 #include <QPainter>
 #include <QDeadlineTimer>
+#include <QMediaPlayer>
 
 #include "Creature.h"
 #include "HpBar.h"
@@ -22,6 +23,7 @@ public:
     int id_;
     int width_;
     int height_;
+    QPixmap* res_;
 protected:
     int damage_;
     int duration_;

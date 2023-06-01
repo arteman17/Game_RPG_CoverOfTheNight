@@ -8,6 +8,11 @@ Hero::Hero() {
     setHp(max_hp_);
     auto* heroHpBar = new HpBar(this);
     heroHpBar->setPos(0, -boundingRect().height() / 2 - heroHpBar->boundingRect().height() / 2 - 7);
+
+    QPixmap* res = new QPixmap(":resources/MageHero.png");
+    AnimationManager anim(*res, 3, speed_, 49, 49, 1);
+    setAnimation(anim);
+
     int inc = 500;
     level_exp_.reserve(60);
     level_exp_[0] = 0;
@@ -18,6 +23,7 @@ Hero::Hero() {
         }
         level_exp_[i] = level_exp_[i - 1] + inc;
     }
+
     enemy_exp_.reserve(60);
     int incE = 5;
     enemy_exp_[0] = 0;
@@ -28,13 +34,13 @@ Hero::Hero() {
 }
 
 QRectF Hero::boundingRect() const {
-    return {-30, -43, 60, 86};
+    return {-35, -35, 70, 70};
 }
 
 void Hero::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
-    auto hero = new QPixmap(":resources/hero.png");
-    painter->drawPixmap(-30, -43, *hero);
-}
+    painter->drawPixmap(
+        boundingRect().topLeft(), animation_.getCurrentFrame().transformed(QTransform::fromScale(direction_.x() >= 0 ? -1 : 1, 1)).scaled(70, 70)
+    );}
 
 void Hero::addWeapon(Weapon weapon) {
     weapons_.push_back(weapon);
@@ -59,6 +65,9 @@ void Hero::addXp(int value) {
     if (exp_ >= level_exp_[level_]) {
         exp_ -= level_exp_[level_];
         ++level_;
+        lvl_player_ = new QMediaPlayer;
+        lvl_player_->setMedia(QUrl("qrc:/resources/sounds/lvl_up.mp3"));
+        lvl_player_->play();
     }
 }
 

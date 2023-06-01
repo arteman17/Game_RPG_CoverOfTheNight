@@ -7,6 +7,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QWidget>
+#include <QMediaPlayer>
 #include <QTimer>
 #include <QPixmap>
 
@@ -30,4 +31,8 @@ private:
     QGraphicsScene* scene_;
     QGraphicsView* view_;
     Controller* controller_;
+    QMediaPlayer* player_;
+public slots:
+    void pause();
+    void unpause();
 };

@@ -5,13 +5,17 @@ Enemy::Enemy(int id, const QPointF& pos) : attack_timer_(new QDeadlineTimer()){
     id_ = id;
     start_pos_ = pos;
 
+    res_ = new QPixmap(":resources/MageHero.png");
+    AnimationManager anim(*res_, 3, speed_, width_, height_, 1);
+    setAnimation(anim);
 }
 
 void Enemy::paint(
     QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget
 ) {
-    painter->setPen({Qt::red, 2});
-    painter->drawRect(boundingRect());
+    painter->drawPixmap(
+        boundingRect().topLeft(), animation_.getCurrentFrame().transformed(QTransform::fromScale(direction_.x() >= 0 ? -1 : 1, 1)).scaled(70, 70)
+    );
 }
 
 QRectF Enemy::boundingRect() const {
@@ -20,6 +24,9 @@ QRectF Enemy::boundingRect() const {
 
 void Enemy::attack(Creature* target) {
     if (!attack_timer_->hasExpired()) return;
+    auto* player = new QMediaPlayer;
+    player->setMedia(QUrl(QString("qrc:/resources/sounds/punch_%1.mp3").arg(id_)));
+    player->play();
     target->damage(damage_);
     attack_timer_->setRemainingTime(duration_);
 }
@@ -46,5 +53,8 @@ void Enemy::setStats(const std::vector<double>& stats) {
     agr_dist_ = static_cast<int>(stats[4]);
     width_ = static_cast<int>(stats[5]);
     height_ = static_cast<int>(stats[6]);
+
+    AnimationManager anim(QPixmap(QString(":resources/enemy_%1.png").arg(id_)), 3, speed_, width_, height_, 1);
+    setAnimation(anim);
 }
 

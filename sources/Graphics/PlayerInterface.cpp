@@ -16,7 +16,7 @@ PlayerInterface::PlayerInterface(Hero* hero, QWidget* parent) : QGraphicsView(pa
     QString hpText = QString("%1 / %2").arg(hero->getHp()).arg(hero->getMaxHp());
     hp_ = new QGraphicsTextItem(hpText);
     hp_->setDefaultTextColor(Qt::green);
-    hp_->setPos(960 - 270, 1080 - 25);
+    hp_->setPos(960 - 270, 1080 - 50);
 
     QString xpText = QString("Level %1 : %2").arg(hero->getLevel()).arg(hero->getXp());
     xp_ = new QGraphicsTextItem(xpText);

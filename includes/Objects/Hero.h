@@ -2,6 +2,7 @@
 
 #include <QPainter>
 #include <vector>
+#include <QMediaPlayer>
 
 #include "Creature.h"
 #include "Weapon.h"
@@ -27,6 +28,7 @@ public:
     std::vector<int> level_exp_ { };
     std::vector<int> enemy_exp_ { };
 protected:
+    QMediaPlayer* lvl_player_;
     int exp_ = 0;
     int level_ = 1;
     std::vector<Weapon> weapons_{Weapon(melee, 5, 85, 20, 800),

@@ -35,4 +35,10 @@ void MovableObject::move(double x, double y) {
     setPosition(
         QPointF(position_.x() + speed_ * x / length, position_.y() + speed_ * y / length)
     );
+    if (animation_.isActive())
+        animation_.nextFrame();
+}
+
+void MovableObject::setAnimation(AnimationManager& anim) {
+    animation_ = std::move(anim);
 }

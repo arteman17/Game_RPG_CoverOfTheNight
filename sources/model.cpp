@@ -1,14 +1,15 @@
 #include "model.h"
-#include <QDebug>
 #include <cmath>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QMediaPlayer>
 
 model::model() : hero_(new Hero) {
     loadEnemyType();
     loadEnemy();
+    loadObj();
 }
 
 void model::modelUpdate() {
@@ -35,27 +36,10 @@ void model::addHeroProjectile(QPointF coord) {
             coord + (QPointF{0, hero_->getPosition().y()} - QPointF{0, 540}), hero_
         ));
     }
+    auto* player_ = new QMediaPlayer;
+    player_->setMedia(QUrl("qrc:/resources/sounds/fireball.mp3"));
+    player_->play();
 }
-
-//void model::addEnemy(QPointF coord) {
-//    if (hero_->getPosition().x() < 960 && hero_->getPosition().y() < 540) {
-//        enemies_.emplace_back(newEnemy(0 ,coord));
-//        enemies_.back()->setStartPos(coord);
-//    } else if (hero_->getPosition().x() > 960 && hero_->getPosition().y() < 540) {
-//        enemies_.emplace_back(
-//            newEnemy(0, coord + QPointF{hero_->getPosition().x(), 0} - QPointF{960, 0})
-//        );
-//        enemies_.back()->setStartPos(coord);
-//    } else if (hero_->getPosition().x() > 960 && hero_->getPosition().y() > 540) {
-//        enemies_.emplace_back(newEnemy(0, coord + hero_->getPosition() - QPointF{960, 540}));
-//        enemies_.back()->setStartPos(coord);
-//    } else {
-//        enemies_.emplace_back(
-//            newEnemy(0, coord + (QPointF{0, hero_->getPosition().y()} - QPointF{0, 540}))
-//        );
-//        enemies_.back()->setStartPos(coord);
-//    }
-//}
 
 Enemy* model::newEnemy(int id, const QPointF& pos) {
     auto* enemy = new Enemy(id, pos);
@@ -99,4 +83,17 @@ void model::loadEnemy() {
         }
     }
     enemyFile.close();
+}
+
+void model::loadObj() {
+    QFile objFile(":/Json/obj.json");
+    objFile.open(QIODevice::ReadOnly);
+    QJsonDocument objJson(QJsonDocument::fromJson(objFile.readAll()));
+    QJsonObject objPos = objJson.object();
+    auto coords = objPos["pos"].toArray();
+    for (auto pos : coords) {
+        auto coord = pos.toArray();
+        scene_obj_.push_back(new GameObject(QPointF(coord[0].toDouble(), coord[1].toDouble())));
+    }
+    objFile.close();
 }
