@@ -15,7 +15,7 @@ public:
 
     void enemyAttack();
 
-    void heroCollide();
+    void heroMoving();
 private:
     model* model_;
 };

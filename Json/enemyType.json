@@ -1,0 +1,22 @@
+[
+  {
+    "id" : 0,
+    "damage" : 5,
+    "maxHp" : 50,
+    "speed" : 3,
+    "duration" : 1000,
+    "agrDist" : 200,
+    "width" : 50,
+    "height" : 50
+  },
+  {
+    "id" : 1,
+    "damage" : 10,
+    "maxHp" : 30,
+    "speed" : 4,
+    "duration" : 1500,
+    "agrDist" : 250,
+    "width" : 70,
+    "height" : 70
+  }
+]

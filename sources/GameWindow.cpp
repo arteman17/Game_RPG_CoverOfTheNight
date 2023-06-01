@@ -23,6 +23,18 @@ GameWindow::GameWindow(QWidget* parent)
     view_->setScene(scene_);
 
     scene_->addItem(controller_->getModel()->hero_);
+
+    hud_ = new PlayerInterface(controller_->getModel()->hero_, this);
+    hud_->show();
+
+    for (auto*& enemy : controller_->getModel()->enemies_) {
+        scene_->addItem(enemy);
+    }
+
+    for (auto*& scene_obj : controller_->getModel()->scene_obj_) {
+        scene_->addItem(scene_obj);
+    }
+
     setCentralWidget(view_);
 
     game_timer_ = new QTimer(this);
@@ -35,10 +47,6 @@ GameWindow::GameWindow(QWidget* parent)
     connect(hero_attack_timer_, &QTimer::timeout, [this]() { attackTime_++; });
     hero_attack_timer_->start();
 
-    scene_->addItem(controller_->getModel()->scene_obj_.back());
-
-//    scene_->addLine({0, 2500, 5000, 2500}, {Qt::red, 3});
-//    scene_->addLine({2500, 0, 2500, 5000}, {Qt::red, 3});
 }
 
 void GameWindow::keyPressEvent(QKeyEvent* event) {
@@ -78,14 +86,15 @@ void GameWindow::keyReleaseEvent(QKeyEvent* event) {
 
 void GameWindow::updateFrame() {
     controller_->getModel()->modelUpdate();
-    controller_->heroCollide();
-    controller_->heroProjCollide();
+    controller_->heroMoving();
     controller_->enemyMoving();
+    controller_->heroProjCollide();
     controller_->enemyAttack();
     if (!controller_->getModel()->hero_->isAlive()) {
 //        close();
         game_timer_->stop();
     }
+    hud_->updateHUD();
     view_->centerOn(controller_->getModel()->hero_);
     view_->scene()->update();
     update();
@@ -96,14 +105,11 @@ void GameWindow::mousePressEvent(QMouseEvent* event) {
         if (attackTime_ >= 1) {
             controller_->getModel()->addHeroProjectile(event->pos());
             scene_->addItem(controller_->getModel()->hero_proj_.back());
-//            double angle = atan2(direction_.y(), direction_.x());
-//            this->setRotation(angle);
-//            this->rotation();
             attackTime_ = 0;
         }
     }
-    if (event->button() == Qt::RightButton) {
-        controller_->getModel()->addEnemy(event->pos());
-        scene_->addItem(controller_->getModel()->enemies_.back());
-    }
+//    if (event->button() == Qt::RightButton) {
+//        controller_->getModel()->addEnemy(event->pos());
+//        scene_->addItem(controller_->getModel()->enemies_.back());
+//    }
 }

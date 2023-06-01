@@ -1,26 +1,21 @@
 #include "Enemy.h"
 
-Enemy::Enemy(const QPointF& pos) : attack_timer_(new QDeadlineTimer()){
+Enemy::Enemy(int id, const QPointF& pos) : attack_timer_(new QDeadlineTimer()){
     setPosition(pos);
-    max_hp_ = 10;
-    hp_ = max_hp_;
-    speed_ = 5;
-    damage_ = 5;
-    agr_dist_ = 300;
+    id_ = id;
     start_pos_ = pos;
-    duration_ = 500;
+
 }
 
 void Enemy::paint(
     QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget
 ) {
     painter->setPen({Qt::red, 2});
-//    painter->setRenderHint(QPainter::Antialiasing);
     painter->drawRect(boundingRect());
 }
 
 QRectF Enemy::boundingRect() const {
-    return QRectF(-20, -20, 40, 40);
+    return QRectF(-width_ / 2, -height_ / 2, width_, height_);
 }
 
 void Enemy::attack(Creature* target) {
@@ -40,3 +35,16 @@ int Enemy::getAgrDist() {
 QPointF Enemy::getStartPos() {
     return start_pos_;
 }
+
+void Enemy::setStats(const std::vector<double>& stats) {
+    if (stats.size() != 7) return;
+    damage_ = static_cast<int>(stats[0]);
+    max_hp_ = static_cast<int>(stats[1]);
+    hp_ = max_hp_;
+    speed_ = stats[2];
+    duration_ = static_cast<int>(stats[3]);
+    agr_dist_ = static_cast<int>(stats[4]);
+    width_ = static_cast<int>(stats[5]);
+    height_ = static_cast<int>(stats[6]);
+}
+

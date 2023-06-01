@@ -1,9 +1,13 @@
 <RCC>
     <qresource>
+        <file>Json/enemy.json</file>
+        <file>Json/enemyType.json</file>
         <file>resources/map.png</file>
         <file>resources/mapExample.png</file>
         <file>resources/house.png</file>
         <file>resources/fireball.png</file>
         <file>resources/hero.png</file>
+        <file>resources/KaelIcon.png</file>
+        <file>resources/interface.png</file>
     </qresource>
 </RCC>

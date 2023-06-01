@@ -19,13 +19,13 @@ const QPointF& GameObject::getPosition() const {
 void GameObject::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     painter->setPen({Qt::black, 3});
     auto house = new QPixmap(":resources/house.png");
-    painter->drawPixmap(-100, -70, *house);
+    painter->drawPixmap(-80, -54, *house);
 //    painter->drawPath(makePath());
 //    painter->drawRect(boundingRect());
 }
 
 QRectF GameObject::boundingRect() const {
-    return QRectF(-100, -70, 200, 140);
+    return QRectF(-80, -54, 160, 108);
 }
 
 QPainterPath GameObject::makePath() {

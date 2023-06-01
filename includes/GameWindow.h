@@ -12,6 +12,7 @@
 
 #include "model.h"
 #include "Controller.h"
+#include "PlayerInterface.h"
 
 class GameWindow : public QMainWindow {
     Q_OBJECT
@@ -24,6 +25,7 @@ public:
 private:
     QTimer* game_timer_;
     QTimer* hero_attack_timer_;
+    PlayerInterface* hud_;
     int attackTime_ = 0;
     QGraphicsScene* scene_;
     QGraphicsView* view_;

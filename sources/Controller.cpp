@@ -9,23 +9,37 @@ model* Controller::getModel() {
 
 void Controller::heroProjCollide() {
     for (auto*& hero_proj : model_->hero_proj_) {
+        for (auto* enemy : model_->enemies_) {
+            if (hero_proj->collidesWithItem(enemy)) {
+                enemy->damage(hero_proj->getDamage());
+                if (!enemy->isAlive()) {
+                    erase_if(model_->enemies_, [enemy](auto* obj) {return enemy == obj;});
+                    delete enemy;
+                    model_->hero_->addXp(model_->hero_->enemy_exp_[model_->hero_->getLevel()]);
+                }
+                delete hero_proj;
+                hero_proj = nullptr;
+                break;
+            }
+        }
+        if (hero_proj == nullptr) {
+            continue;
+        }
+        for(auto*& scene_obj : model_->scene_obj_) {
+            if (hero_proj->collidesWithItem(scene_obj)) {
+                delete hero_proj;
+                hero_proj = nullptr;
+                break;
+            }
+        }
+        if (hero_proj == nullptr) {
+            continue;
+        }
         if (dist(hero_proj->getStartPos(), hero_proj->getPosition())
             > model_->hero_->getActiveWeapon().getRange()) {
             delete hero_proj;
             hero_proj = nullptr;
             continue;
-        }
-        for (auto* enemy : model_->enemies_) {
-            if (hero_proj->collidesWithItem(enemy)) {
-                enemy->damage(hero_proj->getDamage());
-                delete hero_proj;
-                hero_proj = nullptr;
-                if (!enemy->isAlive()) {
-                    erase_if(model_->enemies_, [enemy](auto* obj) {return enemy == obj;});
-                    delete enemy;
-                }
-                break;
-            }
         }
     }
     erase_if(model_->hero_proj_, [](auto* obj) { return obj == nullptr; });
@@ -53,6 +67,42 @@ void Controller::enemyMoving() {
                 }
             }
         }
+        QPointF enemyPos = enemy->getPosition();
+        double x = enemy->getDirection().x();
+        double y = enemy->getDirection().y();
+        enemy->move(x, 0);
+        for(auto obj : model_->scene_obj_) {
+            if (enemy->collidesWithItem(obj)) {
+                enemy->setPosition(enemyPos);
+            }
+        }
+        for(auto otherEnemy : model_->enemies_) {
+            if (otherEnemy != enemy) {
+                if (enemy->collidesWithItem(otherEnemy)) {
+                    enemy->setPosition(enemyPos);
+                }
+            }
+        }
+        if (enemy->collidesWithItem(model_->hero_)) {
+            enemy->setPosition(enemyPos);
+        }
+        enemyPos = enemy->getPosition();
+        enemy->move(0, y);
+        for(auto obj : model_->scene_obj_) {
+            if (enemy->collidesWithItem(obj)) {
+                enemy->setPosition(enemyPos);
+            }
+        }
+        for(auto otherEnemy : model_->enemies_) {
+            if (otherEnemy != enemy) {
+                if (enemy->collidesWithItem(otherEnemy)) {
+                    enemy->setPosition(enemyPos);
+                }
+            }
+        }
+        if (enemy->collidesWithItem(model_->hero_)) {
+            enemy->setPosition(enemyPos);
+        }
     }
 }
 
@@ -66,10 +116,31 @@ void Controller::enemyAttack() {
     }
 }
 
-void Controller::heroCollide() {
+void Controller::heroMoving() {
+    QPointF heroPos = model_->hero_->getPosition();
+    double x = model_->hero_->getDirection().x();
+    double y = model_->hero_->getDirection().y();
+    model_->hero_->move(x, 0);
     for(auto obj : model_->scene_obj_) {
         if (model_->hero_->collidesWithItem(obj)) {
-            model_->hero_->setDirection({-model_->hero_->getDirection().x(), -model_->hero_->getDirection().y()});
+            model_->hero_->setPosition(heroPos);
+        }
+    }
+    for(auto enemy : model_->enemies_) {
+        if (model_->hero_->collidesWithItem(enemy)) {
+            model_->hero_->setPosition(heroPos);
+        }
+    }
+    heroPos = model_->hero_->getPosition();
+    model_->hero_->move(0, y);
+    for(auto obj : model_->scene_obj_) {
+        if (model_->hero_->collidesWithItem(obj)) {
+            model_->hero_->setPosition(heroPos);
+        }
+    }
+    for(auto enemy : model_->enemies_) {
+        if (model_->hero_->collidesWithItem(enemy)) {
+            model_->hero_->setPosition(heroPos);
         }
     }
 }

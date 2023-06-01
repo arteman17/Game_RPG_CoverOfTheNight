@@ -1,8 +1,11 @@
 #pragma once
 
+#include <QPainter>
+#include <vector>
+
 #include "Creature.h"
 #include "Weapon.h"
-#include <QPainter>
+#include "HpBar.h"
 
 class Hero : public Creature {
 public:
@@ -17,6 +20,12 @@ public:
     void setActiveWeapon(int id);
     Weapon getActiveWeapon();
 
+    void addXp(int value);
+    int getXp();
+    int getLevel();
+
+    std::vector<int> level_exp_ { };
+    std::vector<int> enemy_exp_ { };
 protected:
     int exp_ = 0;
     int level_ = 1;

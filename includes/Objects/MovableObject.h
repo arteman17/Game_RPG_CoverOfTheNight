@@ -13,6 +13,7 @@ public:
     void setDirection(const QPointF& direction);
 
     void move();
+    void move(double x, double y);
 protected:
     double speed_;
     QPointF direction_ = {0, 0};
